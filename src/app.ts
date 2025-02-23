@@ -42,16 +42,20 @@ app.post("/webhook", (req: Request, res: Response) => {
     "smh": "shaking my head"
   };
 
-  // Replace slang words with their full forms
-  const translatedMessage = message
-    .split(" ")
-    .map(word => {
-      const lower = word.toLowerCase();
-      return slangDictionary[lower] || word;
-    })
-    .join(" ");
+  console.log(`Received message: "${message}"`);
 
-  console.log(`Received message: ${message}`);
+  // Log processed words using spilt and trim (for debugging)
+  const words = message.spilt("");
+  const processedWords = word.map(word => word.trim().toLowerCase());
+  console.log("processed words:" processedWords);
+
+  // Use regex to translate words based on word boundaries
+  const translatedMessage = message.replace(/\b(\w+)\b/g, (word) => {
+    const lower = word.toLowerCase();
+    // Check if word exists in dictionary, return translation if so
+    return slangDictionary[lower] || word;
+  });
+  
   console.log(`Translated message: ${translatedMessage}`);
 
   // Return the translated message
