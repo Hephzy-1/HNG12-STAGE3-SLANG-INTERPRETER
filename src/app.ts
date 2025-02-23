@@ -51,13 +51,11 @@ app.post("/webhook", (req: Request, res: Response) => {
   console.log("processed words:" processedWords);
 
   // Use regex to translate words based on word boundaries
-  const translatedMessage = message
-  .split(/\s+/) 
-  .map(word => {
-    const cleanedWord = word.toLowerCase().replace(/[^\w\s]/g, ""); // Remove punctuation
-    return slangDictionary[cleanedWord] || word;
-  })
-  .join(" ");
+const translatedMessage = message.replace(/\b(\w+)\b/g, (word) => {
+    const lower = word.toLowerCase();
+    // Check if word exists in dictionary, return translation if so
+    return slangDictionary[lower] || word;
+  });
   
   console.log(`Translated message: ${translatedMessage}`);
 
