@@ -50,7 +50,7 @@ app.post("/webhook", (req: Request, res: Response) => {
   console.log("processed words:" processedWords);
 
   // Use regex to translate words based on word boundaries
-const translatedMessage = message.replace(/\b(\w+)\b/g, (word) => {
+  const translatedMessage = message.replace(/\b(\w+)\b/g, (word) => {
     const lower = word.toLowerCase();
     // Check if word exists in dictionary, return translation if so
     return slangDictionary[lower] || word;
