@@ -11,6 +11,7 @@ const PORT = process.env.PORT || 5000;
 // Middleware to parse JSON bodies
 app.use(express.json());
 app.use(cors());
+app.use(express.urlencoded({ extended: true }));
 
 // Root endpoint
 app.get("/", (req: Request, res: Response) => {
@@ -50,11 +51,13 @@ app.post("/webhook", (req: Request, res: Response) => {
   console.log("processed words:" processedWords);
 
   // Use regex to translate words based on word boundaries
-  const translatedMessage = message.replace(/\b(\w+)\b/g, (word) => {
-    const lower = word.toLowerCase();
-    // Check if word exists in dictionary, return translation if so
-    return slangDictionary[lower] || word;
-  });
+  const translatedMessage = message
+  .split(/\s+/) 
+  .map(word => {
+    const cleanedWord = word.toLowerCase().replace(/[^\w\s]/g, ""); // Remove punctuation
+    return slangDictionary[cleanedWord] || word;
+  })
+  .join(" ");
   
   console.log(`Translated message: ${translatedMessage}`);
 
